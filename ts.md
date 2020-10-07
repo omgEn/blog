@@ -835,8 +835,45 @@ x = y;  // Error, because x and y are not compatible
 ## 高级类型
 
 ## Symbols
+Symbols 是不可改变且唯一的。
+````typescript
+const getClassNameSymbol = Symbol();
+class C {
+    [getClassNameSymbol](){
+       return "C";
+    }
+}
+let c = new C();
+let className = c[getClassNameSymbol](); // "C"
+
+let sym = Symbol();
+let obj = {
+    [sym]: "value"
+};
+console.log(obj[sym]); // "value"
+````
+* Symbol.hasInstance
+ 识别一个对象是否是其实例
+* Symbol.isConcatSpreadable
+ 布尔值，表示当在一个对象上调用Array.prototype.concat时，这个对象的数组元素是否可展开。
+* Symbol.iterator
+ 被for-of调用，返回对象的默认迭代器
+* Symbol.match
+* Symbol.replace
+* Symbol.search
+* Symbol.species
+ 函数值，为一个构造函数，用来创建派生对象
+* Symbol.split
+* Symbol.toPrimitive
+ 把对象转换为相应的原始值
+* Symbol.toStringTag
+ 被内置的Object.prototype.toString调用。返回创建对象时默认的字符串描述
+* Symbol.unscopables
+ 它自己拥有的属性会被with作用于排除在外
 
 ## 迭代器和生成器
+for..of和for..in语句
+都可迭代一个列表，但是用于迭代的值却不同。for...in迭代的是对象的建，for...of迭代的是值
 
 ## 模块
 
