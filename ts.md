@@ -893,3 +893,5 @@ serverless 云开发 ,端开发； 全栈（BFF）
 
 
 
+* type ,interface区别
+interface只能是object，class，function;type可以是其他的类型
