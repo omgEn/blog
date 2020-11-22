@@ -365,9 +365,11 @@ c.interval = 5.0;
 
 * public(default)
 
-* private 不能在声明它的类的外部访问（子类不能访问了）
+* private 不能在声明它的类的外部访问（子类会与其共享一个地址）
 
-* protected 子类可通过实例方法访问
+* protected 子类可通过实例方法访问，不能直接访问
+
+  可修饰构造函数
 
 ````typescript
 class Person {
@@ -389,7 +391,7 @@ let howard = new Employee("aa","bb");
 let john = new Person("cc"); // error,'Person'的构造函数是被保护的
 ````
 
-* readonly 必须在声明时或构造函数里被初始化
+* readonly 只读属性，必须在声明时或构造函数里被初始化
 
 ````typescript
 class Octopus {
@@ -450,7 +452,7 @@ class Employee {
 
 不同于接口，抽象类可包含成员的实现细节。
 
-抽象类中的抽象方法不包含具体实现且必须在派生类中实现。
+抽象类中的抽象方法不包含具体实现且必须在派生类中实现。（子类重写）
 
 ````typescript
 abstract class Department {
@@ -578,7 +580,7 @@ js里函数根据传入不同的参数而返回不同类型的数据。
 
 * 定义泛型函数
 
-**类型变量**，是一种特殊的变量，只用于表示类型而不是值。
+**类型变量T**，是一种特殊的变量，只用于表示类型而不是值。
 
 ````typescript
 function identity<T>(arg: T):T {
@@ -586,7 +588,7 @@ function identity<T>(arg: T):T {
 }
 ````
 
-以上添加了类型变量T，采纳数类型与返回值类型都是相同的，这允许跟踪函数里使用的类型的信息。
+以上添加了类型变量T，**参数类型与返回值类型都是相同的**，这允许跟踪函数里使用的类型的信息。
 
 * 使用泛型函数
 
@@ -652,7 +654,6 @@ function identity<T>(arg: T): T {
     return arg;
 }
 let myIdentity: GenericIdentityFn<number> = identity;
-
 ````
 
 * 泛型类
@@ -709,17 +710,27 @@ function create<T>(c:{new():T}):T{
 
 使用原型属性并约束构造函数与类实例的关系
 
-not ending......
-
 ````typescript
-class Bee
+class BeeKeeper {
+    hasMask: boolean;
+}
+class Zookeeper {
+    nametag: string;
+}
+class Animal {
+    numLegs: number;
+}
+class Bee extends Animal {
+    keeper: BeeKeeper;
+}
+class Lion extends Animal {
+    keeper: ZooKeeper;
+}
+function createInstance<A extends Animal>(c: new ()=>A):A{
+    return new c();
+}
+
 ````
-
-
-
-
-
-
 
 ## 枚举
 
@@ -812,7 +823,7 @@ x = y; // right
 
 这运行子类赋值给父类，但不能赋值给其它有同源类型的类。
 
-## 泛型
+### 泛型
 
 ````typescript
 nterface Empty<T> {
@@ -872,10 +883,19 @@ console.log(obj[sym]); // "value"
  它自己拥有的属性会被with作用于排除在外
 
 ## 迭代器和生成器
-for..of和for..in语句
-都可迭代一个列表，但是用于迭代的值却不同。for...in迭代的是对象的建，for...of迭代的是值
+for...of 迭代的是值，常用于数组
+
+for...in迭代的是键，常用于对象
 
 ## 模块
+
+模块是在其自身的作用域里执行的，而不是在全局作用域里；即在一个模块里，除非明确使用export导出，在模块外部是不可见的。且要使用时，必须要用import导入。
+
+模块使用模块加载器去导入其它的模块。js模块加载器是服务于Node.js的CommonJS和服务于web应用的Require.js.
+
+
+
+
 
 ## 命名空间
 
